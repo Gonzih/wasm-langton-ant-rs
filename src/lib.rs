@@ -331,14 +331,20 @@ impl Turmite {
         }
     }
 
+    fn render(&self, ctx: &CanvasRenderingContext2d, color: &str) {
+        if self.is_active() {
+            ctx.set_fill_style(&JsValue::from(color));
+            ctx.fill_rect(
+                (self.x * self.pixel_ratio) as f64,
+                (self.y * self.pixel_ratio) as f64,
+                self.pixel_ratio as f64,
+                self.pixel_ratio as f64,
+            );
+        }
+    }
+
     fn render_self(&self, ctx: &CanvasRenderingContext2d) {
-        ctx.set_fill_style(&JsValue::from(ANT_COLOR));
-        ctx.fill_rect(
-            (self.x * self.pixel_ratio) as f64,
-            (self.y * self.pixel_ratio) as f64,
-            self.pixel_ratio as f64,
-            self.pixel_ratio as f64,
-        );
+        self.render(ctx, ANT_COLOR);
     }
 
     fn render_cell(&self, ctx: &CanvasRenderingContext2d) {
@@ -348,13 +354,7 @@ impl Turmite {
             EMPTY_COLOR
         };
 
-        ctx.set_fill_style(&JsValue::from(color));
-        ctx.fill_rect(
-            (self.x * self.pixel_ratio) as f64,
-            (self.y * self.pixel_ratio) as f64,
-            self.pixel_ratio as f64,
-            self.pixel_ratio as f64,
-        );
+        self.render(ctx, color);
     }
 
     pub fn log(&self) {
