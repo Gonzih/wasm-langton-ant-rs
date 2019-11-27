@@ -234,9 +234,9 @@ impl Orientation {
 
         match self {
             Up => Left,
-            Right => Up,
-            Down => Right,
             Left => Down,
+            Down => Right,
+            Right => Up,
         }
     }
 }
