@@ -341,7 +341,7 @@ impl Turmite {
     fn tick_pos(&mut self) {
         use Orientation::*;
 
-        if self.x < self.width && self.y < self.height {
+        if self.x < self.width - 1 && self.y < self.height - 1 {
             match &self.orientation {
                 Up => self.move_by(0, -1),
                 Right => self.move_by(1, 0),
