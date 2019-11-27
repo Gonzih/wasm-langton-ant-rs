@@ -206,6 +206,41 @@ enum Orientation {
     Left,
 }
 
+impl Orientation {
+    fn uturn(&self) -> Orientation {
+        use Orientation::*;
+
+        match self {
+            Up => Down,
+            Right => Left,
+            Down => Up,
+            Left => Right,
+        }
+    }
+
+    fn clockwise(&self) -> Orientation {
+        use Orientation::*;
+
+        match self {
+            Up => Right,
+            Right => Down,
+            Down => Left,
+            Left => Up,
+        }
+    }
+
+    fn counter_clockwise(&self) -> Orientation {
+        use Orientation::*;
+
+        match self {
+            Up => Left,
+            Right => Up,
+            Down => Right,
+            Left => Down,
+        }
+    }
+}
+
 #[wasm_bindgen]
 pub struct Turmite {
     x: usize,
@@ -292,27 +327,14 @@ impl Turmite {
     }
 
     fn rotate(&mut self, rotation: Rotate) {
-        use Orientation::*;
         use Rotate::*;
         // log!("Rotating with {:?}", rotation);
 
-        self.orientation = match (self.orientation.clone(), rotation) {
-            (orientation, Noop) => orientation,
-
-            (Up, Clockwise) => Right,
-            (Right, Clockwise) => Down,
-            (Down, Clockwise) => Left,
-            (Left, Clockwise) => Up,
-
-            (Up, CounterClockwise) => Left,
-            (Right, CounterClockwise) => Up,
-            (Down, CounterClockwise) => Right,
-            (Left, CounterClockwise) => Down,
-
-            (Up, Uturn) => Down,
-            (Right, Uturn) => Left,
-            (Down, Uturn) => Up,
-            (Left, Uturn) => Right,
+        self.orientation = match rotation {
+            Noop => self.orientation.clone(),
+            Clockwise => self.orientation.clockwise(),
+            CounterClockwise => self.orientation.counter_clockwise(),
+            Uturn => self.orientation.uturn(),
         }
     }
 
